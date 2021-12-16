@@ -1,5 +1,6 @@
 package com.bridgelabz.lmscandidate.service;
 
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -70,6 +71,8 @@ public class HiredCandidateService implements IHiredCandidateService {
 		Optional<HiredCandidate> hiredCandidate =  candidateRepository.findById(Id);
 		if(hiredCandidate.isPresent()) {
 			hiredCandidate.get().setFirstName(hiredCandidateDto.getFirstName());
+			hiredCandidate.get().setMiddleName(hiredCandidateDto.getMiddleName());
+			hiredCandidate.get().setLastName(hiredCandidateDto.getLastName());
 			hiredCandidate.get().setEmail(hiredCandidateDto.getEmail());
 			hiredCandidate.get().setHiredCity(hiredCandidateDto.getHiredCity());
 			hiredCandidate.get().setLocation(hiredCandidateDto.getLocation());
@@ -93,4 +96,8 @@ public class HiredCandidateService implements IHiredCandidateService {
 		return null;
 	}
 
-}
+
+
+	}
+
+

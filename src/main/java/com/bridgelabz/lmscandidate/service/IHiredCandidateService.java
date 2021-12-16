@@ -1,5 +1,6 @@
 package com.bridgelabz.lmscandidate.service;
 
+
 import java.util.List;
 
 import javax.validation.Valid;
@@ -15,4 +16,5 @@ public interface IHiredCandidateService {
     HiredCandidate getCandidateById(Long id);
 	HiredCandidate updateCandidate(String token, HiredCandidateDto hiredCandidateDto);
 	HiredCandidate deleteCandidate(Long id);
+	
 }
