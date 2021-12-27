@@ -1,6 +1,7 @@
 package com.bridgelabz.lmscandidate.service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -9,6 +10,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import com.bridgelabz.lmscandidate.dto.HiredCandidateDto;
 import com.bridgelabz.lmscandidate.model.HiredCandidate;
@@ -26,16 +28,31 @@ public class HiredCandidateService implements IHiredCandidateService {
 	@Autowired
 	JwtTokenUtil tokenUtil;
 	
+//	@Override
+//	public List<HiredCandidate> getAllCandidates() {
+//	return candidateRepository.findAll().stream().map(hiredCandidate -> {
+//		HiredCandidateDto hiredCandidateDto = new HiredCandidateDto();
+//		hiredCandidateDto.setId(hiredCandidate.getId());
+//		hiredCandidateDto.setFirstName(hiredCandidate.getFirstName());
+//		hiredCandidate.setMiddleName(hiredCandidateDto.getMiddleName());
+//		hiredCandidate.setLastName(hiredCandidateDto.getLastName());
+//		hiredCandidateDto.setEmail(hiredCandidate.getEmail());
+//		hiredCandidate.setMobileNum(hiredCandidateDto.getMobileNum());
+//		hiredCandidate.setHiredCity(hiredCandidateDto.getHiredCity());
+//		hiredCandidate.setHiredDate(hiredCandidateDto.getHiredDate());
+//		hiredCandidate.setDegree(hiredCandidateDto.getDegree());
+//		hiredCandidate.setStatus(hiredCandidateDto.getStatus());
+//		
+//		return hiredCandidate;
+//	}).collect(Collectors.toList());
+//}
 	@Override
-	public List<HiredCandidateDto> getAllCandidates() {
-	return candidateRepository.findAll().stream().map(hiredCandidate -> {
-		HiredCandidateDto hiredCandidateDto = new HiredCandidateDto();
-		hiredCandidateDto.setId(hiredCandidate.getId());
-		hiredCandidateDto.setFirstName(hiredCandidate.getFirstName());
-		hiredCandidateDto.setEmail(hiredCandidate.getEmail());
-		hiredCandidate.setHiredCity(hiredCandidateDto.getHiredCity());
-		return hiredCandidateDto;
-	}).collect(Collectors.toList());
+	public List<HiredCandidate> getAllCandidates() {
+				List<HiredCandidate> userData = new ArrayList<>();
+				candidateRepository.findAll().forEach(userData::add);
+					return userData;
+			
+		
 }
 	
 	
@@ -52,8 +69,8 @@ public class HiredCandidateService implements IHiredCandidateService {
 //	}
 	
 	public HiredCandidate createCandidate(@Valid HiredCandidateDto hiredCandidateDto) {
-		HiredCandidate hiredCandidate = new HiredCandidate();
-		hiredCandidate.createCandidate(hiredCandidateDto);
+		HiredCandidate hiredCandidate = new HiredCandidate(hiredCandidateDto);
+		
 		return candidateRepository.save(hiredCandidate);
 	}
 
@@ -93,6 +110,13 @@ public class HiredCandidateService implements IHiredCandidateService {
 			candidateRepository.delete(hiredCandidate.get());
 			;
 		}
+		return null;
+	}
+
+
+	@Override
+	public String deleteAllData() {
+		candidateRepository.deleteAll();
 		return null;
 	}
 

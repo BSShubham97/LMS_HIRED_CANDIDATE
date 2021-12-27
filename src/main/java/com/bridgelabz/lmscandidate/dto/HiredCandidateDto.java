@@ -26,6 +26,6 @@ public @ToString class HiredCandidateDto {
 		private String joinDate;
 		private String location;
 		private Double aggregatePr;
-		private Integer currentPincode;
-		private Integer permanentPincode ;
+		private Long currentPincode;
+		private Long permanentPincode ;
 }

@@ -16,6 +16,7 @@
 	<description>Project using Spring Boot </description>
 	<properties>
 		<java.version>11</java.version>
+		<spring-cloud.version>2021.0.0</spring-cloud.version>
 	</properties>
 	<dependencies>
 
@@ -85,14 +86,29 @@
 			<version>3.8.1</version>
 		</dependency>
 		<dependency>
-		<!-- Apache POI : The Java API for Microsoft Documents -->
+			<!-- Apache POI : The Java API for Microsoft Documents -->
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
 			<version>4.1.2</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+
 
 	</dependencies>
-
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<plugins>

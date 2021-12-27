@@ -19,8 +19,8 @@ import com.bridgelabz.lmscandidate.model.HiredCandidate;
 public class ExcelHelper {
 
 	public static String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-	static String[] HEADERs = { "Id", "FirstName", "Email", "HiredCity", "Degree", "HiredLab", "Location" };
-	static String SHEET = "HiredCandidateData";
+	static String[] HEADERs = {"Id","FirstName","MiddleName","LastName","Email","MobileNum","HiredCity","HiredDate","Degree","HiredLab","AttitudeRemark","CommunicationRemark","KnowledgeRemark","OnboardingStatus","Status","CreatorUser","JoinDate","Location","AggPercentage","CurrentPincode","PermanentPincode"};
+//	static String SHEET = "HiredCandidateData";
 
 	public static boolean hasExcelFormat(MultipartFile file) {
 		if (!TYPE.equals(file.getContentType())) {
@@ -61,19 +61,61 @@ public class ExcelHelper {
 						hiredCandidate.setFirstName(currentCell.getStringCellValue());
 						break;
 					case 2:
-						hiredCandidate.setEmail(currentCell.getStringCellValue());
+						hiredCandidate.setMiddleName(currentCell.getStringCellValue());
 						break;
 					case 3:
-						hiredCandidate.setHiredCity(currentCell.getStringCellValue());
+						hiredCandidate.setLastName(currentCell.getStringCellValue());
 						break;
 					case 4:
-						hiredCandidate.setDegree(currentCell.getStringCellValue());
+						hiredCandidate.setEmail(currentCell.getStringCellValue());
 						break;
 					case 5:
-						hiredCandidate.setHiredLab(currentCell.getStringCellValue());
+						hiredCandidate.setMobileNum(currentCell.getStringCellValue());
 						break;
 					case 6:
+						hiredCandidate.setHiredCity(currentCell.getStringCellValue());
+						break;
+					case 7:
+						hiredCandidate.setHiredDate(currentCell.getStringCellValue());
+						break;
+					case 8:
+						hiredCandidate.setDegree(currentCell.getStringCellValue());
+						break;
+					case 9:
+						hiredCandidate.setHiredLab(currentCell.getStringCellValue());
+						break;
+					case 10:
+						hiredCandidate.setAttitudeRemark(currentCell.getStringCellValue());
+						break;
+					case 11:
+						hiredCandidate.setCommunication(currentCell.getStringCellValue());
+						break;
+					case 12:
+						hiredCandidate.setKnowledgeRemark(currentCell.getStringCellValue());
+						break;
+					case 13:
+						hiredCandidate.setOnboardingStatus(currentCell.getStringCellValue());
+						break;
+					case 14:
+						hiredCandidate.setStatus(currentCell.getStringCellValue());
+						break;
+					case 15:
+						hiredCandidate.setCreatorUser(currentCell.getStringCellValue());
+						break;
+					case 16:
+						hiredCandidate.setJoinDate(currentCell.getStringCellValue());
+						break;
+					case 17:
 						hiredCandidate.setLocation(currentCell.getStringCellValue());
+						break;
+					case 18:
+						hiredCandidate.setAggregatePr((Double)currentCell.getNumericCellValue());
+						break;
+					case 19:
+						hiredCandidate.setCurrentPincode((long) currentCell.getNumericCellValue());
+						break;
+					case 20:
+						hiredCandidate.setPermanentPincode((long) currentCell.getNumericCellValue());
 						break;
 
 					default:

@@ -7,7 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bridgelabz.lmscandidate.dto.HiredCandidateDto;
@@ -41,17 +42,24 @@ public class CandidateController {
 	JwtTokenUtil tokenUtil;
 	@Autowired
 	ExcelService fileService;
-
+@Autowired
+RestTemplate restTemplate;
+	
 	@RequestMapping("/get")
-	public ResponseEntity<ResponseDto> getAllCandidates() {
-		List<HiredCandidateDto> candidateDataList = iHiredCandidateService.getAllCandidates();
+	public ResponseEntity<ResponseDto> getAllCandidates(@RequestParam(name="token") String token ) {
+		Boolean isVerified =  restTemplate.getForObject("http://localhost:8081/lmsuser/verify?token="+token,Boolean.class );
+			if(isVerified == true) {
+				List<HiredCandidate> candidateDataList = iHiredCandidateService.getAllCandidates();
 		ResponseDto respDto = new ResponseDto("GET CALL FOR HIRED CANDIDATES SUCCESSFUL", candidateDataList);
 		return new ResponseEntity<ResponseDto>(respDto, HttpStatus.OK);
+		}else {
+			ResponseDto respDto = new ResponseDto("GET CALL FOR CANDIDATES UNSUCCESSFUL !!!");
+			return new ResponseEntity<ResponseDto>(respDto, HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@PostMapping("/addCandidate")
 	public ResponseEntity<ResponseDto> createUser(@Valid @RequestBody HiredCandidateDto hiredCandidateDto) {
-
 		HiredCandidate hiredCandidate = iHiredCandidateService.createCandidate(hiredCandidateDto);
 		ResponseDto respDto = new ResponseDto("Hired Candidate Added Succcessfully !!!",
 				tokenUtil.createToken(hiredCandidate.getId()));
@@ -82,6 +90,13 @@ public class CandidateController {
 		return new ResponseEntity<ResponseDto>(respDto, HttpStatus.OK);
 	}
 
+	@DeleteMapping("/cleardata")
+	public ResponseEntity<ResponseDto> deleteAllData() {
+		iHiredCandidateService.deleteAllData();
+		ResponseDto respDto = new ResponseDto("DELETED EVERYTHING SUCCESSFULLY !!!", "DATABASE UPDATED. NOW EMPTY ");
+		return new ResponseEntity<ResponseDto>(respDto, HttpStatus.OK);
+	}
+
 	/**
 	 * Excel file APIs
 	 */
@@ -96,7 +111,8 @@ public class CandidateController {
 				return new ResponseEntity<ResponseDto>(respDto, HttpStatus.OK);
 
 			} catch (Exception e) {
-				ResponseDto respDto = new ResponseDto("CANNOT UPLOAD FILE !!!", file.getOriginalFilename()+" UPLOAD FAILED !!!");
+				ResponseDto respDto = new ResponseDto("CANNOT UPLOAD FILE !!!",
+						file.getOriginalFilename() + " UPLOAD FAILED !!!");
 				return new ResponseEntity<ResponseDto>(respDto, HttpStatus.EXPECTATION_FAILED);
 
 			}
